@@ -7,3 +7,4 @@ if div>0:
     print("no es primo")
 else: 
     print("es primo")
+    print("gatirriquitiquisimo")
