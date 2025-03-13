@@ -1,3 +1,5 @@
+# Escribir un programa que permita convertir un entero dado en base 2, 4, 8, 16.
+
 n = int(input("Número a representar: "))
 
 print("Seleccione una base para hacer la representación del número")
