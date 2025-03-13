@@ -41,4 +41,4 @@ while salir == False:
             print(f"Hay {b} números positivos")
             print(f"Promedio: {bSuma/b}")
             
-        salir = True
+        salir = True # Cambiar el valor de Salir para detener el programa
