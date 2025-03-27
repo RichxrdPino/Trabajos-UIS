@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import random as rnd
 
-n = 50
+n = int(input("Ingresa el número de elementos aleatorios a los que quieres aplicar regresión lineal: "))
 X = []
 Y = []
 
