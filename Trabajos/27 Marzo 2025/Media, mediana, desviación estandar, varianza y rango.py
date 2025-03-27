@@ -5,7 +5,7 @@
 import random as rnd
 
 # Solicitar cantidad de datos y definir lista de estos
-n = int(input("Ingresa el número de datos aleatorios a los que quieres aplicar regresión lineal: "))
+n = int(input("Ingresa el número de datos aleatorios a los que quieres aplicar los valores estadísticos: "))
 A = []
 
 #*  Generar n elementos en la lista A
