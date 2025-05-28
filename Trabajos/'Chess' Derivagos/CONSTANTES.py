@@ -11,3 +11,11 @@ FPS = 60
 
 WHITE = (228, 228, 228)
 BLACK = (27, 27, 27)
+AMARILLO = (253, 253, 150)
+AMARILLO_OSCURO = (153, 153, 50)
+
+# Otros (No necesariamente constantes)
+
+posPiezas = []
+seleccion = None
+selecPieza = False
