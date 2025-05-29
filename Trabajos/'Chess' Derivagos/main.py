@@ -40,38 +40,85 @@ def dibujarTablero(A, seleccion=None):
 
 # -------------------Función Mover Pieza ----------------- #
 
-def moverPieza(A, pos1, pos2):
-    print(" :( ")
+def moverPieza(A):
+    x, y = pos1
+    z, w = pos2
     
+    x = int(x)
+    y = int(y)
+    z = int(z)
+    w = int(w)
+    
+    if A[x, y] == 1.0:
+        if z == x+1 and y == w:
+            A[z,w] = A[x, y]
+            A[x, y] = 0
+        elif z == x+2 and y == w and x == 1:
+            A[z,w] = A[x, y]
+            A[x, y] = 0
+            
+    if A[x, y] == 1.1:
+        if z == x-1 and y == w:
+            A[z,w] = A[x, y]
+            A[x, y] = 0
+        elif z == x-2 and y == w and x == 6:
+            A[z,w] = A[x, y]
+            A[x, y] = 0
+            
+    
+
 # -------------------Función principal----------------- #
 
 def main():
-    global seleccion, selecPieza
+    global seleccion, selecPieza, pos1, pos2, cont
     running = True
     while running:
-        # 1) Manejo de eventos
+        # Manejo de eventos
         for event in pygame.event.get():
+            # Evento cerrar ventana
             if event.type == pygame.QUIT:
                 running = False
 
+            # Evento click
             if event.type == pygame.MOUSEBUTTONDOWN:
                 seleccion = None # Reinicializar seleccion
-                selecPieza = False
-                x, y = event.pos
+                selecPieza = False # Reinicializar si hay o no una pieza selecionada
+                x, y = event.pos # Guardar posición del click
+                # Guardar fila y columna de la selección
                 col = (x - DESFASE_LADO) // TAM_CASILLA
                 fila = (y - DESFASE_LADO) // TAM_CASILLA
+                cont = cont + 1
+                        
                 # comprobamos que esté dentro del tablero
                 for area in posPiezas:
-                    print(area.collidepoint(event.pos))
                     if area.collidepoint(event.pos):
                         seleccion = (fila, col)
                         selecPieza = True
+                        
+                if selecPieza:
+                    pos1 = (fila, col)
+                    pos2 = (0,0)
+                    cont = 0
+                    cont = cont + 1
+                elif 0 < cont < 3:
+                    pos2 = (fila,col)
+                else:
+                    pos1 = (0,0)
+                    pos2 = (0,0)
+                    cont = 0
+                print(f"pos1: {pos1}, pos2: {pos2}")
+                
         # Dibujado
         pantalla.fill((20, 20, 20))
         dibujarTablero(mTablero, seleccion)
         posPiezas.clear()
         dibujarPiezas(mPiezas)
-
+        
+        if pos1 != (0,0) and pos2 != (0,0):
+            moverPieza(mPiezas)
+            pos1 = (0,0)
+            pos2 = (0,0)
+        
         pygame.display.flip()
         clock.tick(FPS)
 
