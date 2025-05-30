@@ -17,8 +17,9 @@ AMARILLO_OSCURO = (153, 153, 50)
 # Otros (No necesariamente constantes)
 
 posPiezas = []
+
 seleccion = None
 selecPieza = False
-
 pos1, pos2 = (0,0), (0,0)
 cont = 0
+turno = "blanco"
