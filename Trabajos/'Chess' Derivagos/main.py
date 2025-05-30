@@ -3,24 +3,24 @@ from piezas import *
 import sys, pygame
 import numpy as np
 
-# Inicialización de Pygame\pygame.init()
+# Inicialización de Pygame
 pygame.init()
 
 # Configuración de la ventana
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
-pygame.display.set_caption('"Ajedrez" Derivagos')
+pygame.display.set_caption('Ajedrez Derivagos')
 
 # Reloj para controlar FPS
 clock = pygame.time.Clock()
 
 # ------------------Crear Matriz para Tablero------------------ #
-
-mTablero = np.zeros((FILAS,COLS))
+mTablero = np.zeros((FILAS, COLS))
 for i in range(FILAS):
     for j in range(COLS):
-        if (i + j) % 2 == 0:
-            mTablero[i,j] = 1
-print("Matriz Tablero")
+        # Pintar tablero estilo ajedrez
+        mTablero[i, j] = 1 if (i + j) % 2 == 0 else 0
+
+print('Matriz Tablero')
 print(mTablero)
 
 # -------------------Función Dibujar Tablero y Selección de pieza----------------- #
@@ -44,33 +44,42 @@ def moverPieza(A):
     x, y = pos1
     z, w = pos2
     
-    x = int(x)
-    y = int(y)
-    z = int(z)
-    w = int(w)
+    x, y, z, w = map(int, (x, y, z, w))
+    pieza = A[x, y]
     
-    if A[x, y] == 1.0:
-        if z == x+1 and y == w:
-            A[z,w] = A[x, y]
-            A[x, y] = 0
-        elif z == x+2 and y == w and x == 1:
-            A[z,w] = A[x, y]
-            A[x, y] = 0
+    if A[z,w] == 0:
+        # Movimiento peones blancos (1.0)
+        if pieza == 1.0:
+            # Un paso adelante
+            if z == x + 1 and y == w:
+                A[z, w] = pieza
+                A[x, y] = 0
+                return True
+            # Dos pasos desde posición inicial
+            elif z == x + 2 and y == w and x == 1:
+                A[z, w] = pieza
+                A[x, y] = 0
+                return True
+        # Movimiento peones negros (1.1)
+        elif pieza == 1.1:
+            # Un paso adelante
+            if z == x - 1 and y == w:
+                A[z, w] = pieza
+                A[x, y] = 0
+                return True
+            # Dos pasos desde posición inicial
+            elif z == x - 2 and y == w and x == 6:
+                A[z, w] = pieza
+                A[x, y] = 0
+                return True
             
-    if A[x, y] == 1.1:
-        if z == x-1 and y == w:
-            A[z,w] = A[x, y]
-            A[x, y] = 0
-        elif z == x-2 and y == w and x == 6:
-            A[z,w] = A[x, y]
-            A[x, y] = 0
-            
-    
+    # Si no se movió la pieza, devolver false
+    return False
 
 # -------------------Función principal----------------- #
 
 def main():
-    global seleccion, selecPieza, pos1, pos2, cont
+    global seleccion, selecPieza, pos1, pos2, cont, turno
     running = True
     while running:
         # Manejo de eventos
@@ -90,11 +99,19 @@ def main():
                 cont = cont + 1
                         
                 # comprobamos que esté dentro del tablero
-                for area in posPiezas:
-                    if area.collidepoint(event.pos):
-                        seleccion = (fila, col)
-                        selecPieza = True
-                        
+                if mPiezas[int(fila),int(col)] - int(mPiezas[int(fila),int(col)]) == 0 and turno == "negro":
+                    for area in posPiezas:
+                        if area.collidepoint(event.pos):
+                            seleccion = (fila, col)
+                            selecPieza = True
+                    
+                elif mPiezas[int(fila),int(col)] - int(mPiezas[int(fila),int(col)]) != 0 and turno == "blanco":
+                    for area in posPiezas:
+                        if area.collidepoint(event.pos):
+                            seleccion = (fila, col)
+                            selecPieza = True
+                
+                print(f"selecpieza? {selecPieza}")
                 if selecPieza:
                     pos1 = (fila, col)
                     pos2 = (0,0)
@@ -106,8 +123,6 @@ def main():
                     pos1 = (0,0)
                     pos2 = (0,0)
                     cont = 0
-                print(f"pos1: {pos1}, pos2: {pos2}")
-                
         # Dibujado
         pantalla.fill((20, 20, 20))
         dibujarTablero(mTablero, seleccion)
@@ -115,12 +130,17 @@ def main():
         dibujarPiezas(mPiezas)
         
         if pos1 != (0,0) and pos2 != (0,0):
-            moverPieza(mPiezas)
+            if moverPieza(mPiezas):
+                if turno == "blanco":
+                    turno = "negro" 
+                else:
+                    turno = "blanco"
             pos1 = (0,0)
             pos2 = (0,0)
         
         pygame.display.flip()
         clock.tick(FPS)
+        
 
     pygame.quit()
     sys.exit()
