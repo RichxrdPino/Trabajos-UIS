@@ -48,7 +48,7 @@ def moverPieza(A):
     pieza = A[x, y]
     
     if A[z,w] == 0:
-        # Movimiento peones blancos (1.0)
+        # Movimiento peones negros (1.0)
         if pieza == 1.0:
             # Un paso adelante
             if z == x + 1 and y == w:
@@ -56,11 +56,11 @@ def moverPieza(A):
                 A[x, y] = 0
                 return True
             # Dos pasos desde posición inicial
-            elif z == x + 2 and y == w and x == 1:
+            elif z == x + 2 and y == w and x == 1 and A[x+1,y] == 0:
                 A[z, w] = pieza
                 A[x, y] = 0
                 return True
-        # Movimiento peones negros (1.1)
+        # Movimiento peones blancos (1.1)
         elif pieza == 1.1:
             # Un paso adelante
             if z == x - 1 and y == w:
@@ -68,11 +68,17 @@ def moverPieza(A):
                 A[x, y] = 0
                 return True
             # Dos pasos desde posición inicial
-            elif z == x - 2 and y == w and x == 6:
+            elif z == x - 2 and y == w and x == 6 and A[x-1,y] == 0:
                 A[z, w] = pieza
                 A[x, y] = 0
                 return True
-            
+        # Movimiento caballo blanco y negro
+        elif pieza == 2.0 or pieza == 2.1:
+            if ((z == x + 2 or z == x - 2) and (w == y + 1 or w == y - 1)) or ((z == x + 1 or z == x - 1) and (w == y + 2 or w == y - 2)):
+                A[z, w] = pieza
+                A[x, y] = 0
+                return True
+        print(f"pos1: {(x,y)}, pos2: {(z,w)}")
     # Si no se movió la pieza, devolver false
     return False
 
@@ -122,7 +128,7 @@ def main():
                 else:
                     pos1 = (0,0)
                     pos2 = (0,0)
-                    cont = 0
+                    cont = 1
         # Dibujado
         pantalla.fill((20, 20, 20))
         dibujarTablero(mTablero, seleccion)
