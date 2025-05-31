@@ -20,6 +20,15 @@ posPiezas = []
 
 seleccion = None
 selecPieza = False
-pos1, pos2 = (0,0), (0,0)
+pos1, pos2 = (-1,-1), (-1,-1)
 cont = 0
 turno = "blanco"
+
+# Registro de si el rey blanco o negro o alguna torre blanca o negra se han movido
+reyInicialB = True
+torreInicial_1B = True
+torreInicial_2B = True
+
+reyInicialN = True
+torreInicial_1N = True
+torreInicial_2N = True
