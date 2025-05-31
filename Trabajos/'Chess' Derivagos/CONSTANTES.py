@@ -2,7 +2,7 @@
 
 FILAS, COLS = 8, 8
 TAM_CASILLA = 80
-DESFASE_CASILLAS = 60
+DESFASE_CASILLAS = 50
 DESFASE_LADO = DESFASE_CASILLAS / 2
 ANCHO, ALTO = TAM_CASILLA*COLS + DESFASE_CASILLAS, TAM_CASILLA*FILAS + DESFASE_CASILLAS
 FPS = 60
@@ -32,3 +32,7 @@ torreInicial_2B = True
 reyInicialN = True
 torreInicial_1N = True
 torreInicial_2N = True
+
+#Puntos Blanco y Negro
+pntB = 0
+pntN = 0
