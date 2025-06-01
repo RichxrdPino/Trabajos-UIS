@@ -13,12 +13,22 @@ pygame.display.set_caption('Ajedrez Derivagos')
 
 # Fuente de un texto
 fuente = pygame.font.SysFont("Arial", 24)
+fuente_victoria = pygame.font.SysFont("Arial", 64)
 # Textos para mostrar los puntos
-textoPntsBlanco = fuente.render(f"+{pntB}", True, WHITE)
-textoPntsNegro = fuente.render(f"+{pntN}", True, WHITE)
+textoPntsBlanco = fuente.render(f"{pntB}", True, WHITE)
+textoPntsNegro = fuente.render(f"{pntN}", True, WHITE)
+
+textoVictoriaBlancas = fuente_victoria.render("Ganan Blancas", True, WHITE)
+textoVictoriaNegras = fuente_victoria.render("Ganan Negras", True, WHITE)
 # Posición de los textos
-pos_textoPntsBlanco = (0,ALTO - 54)
-pos_textoPntsNegro = (0,20)
+pos_textoPntsBlanco = (3,ALTO - 50)
+pos_textoPntsNegro = (3,20)
+
+pos_textoVictoriaBlancas = textoVictoriaBlancas.get_rect()
+pos_textoVictoriaNegras = textoVictoriaNegras.get_rect()
+
+pos_textoVictoriaBlancas.center = (ANCHO // 2, ALTO // 2)
+pos_textoVictoriaNegras.center = (ANCHO // 2, ALTO // 2)
 
 # Sonido mover pieza
 sndMoverPieza = pygame.mixer.Sound("assets/sonidos/moverPieza.mp3")
@@ -57,14 +67,12 @@ def dibujarTablero(A, seleccion=None):
                 # coloreado normal (ejemplo: chessboard)
                 pygame.draw.rect(pantalla, WHITE if (i + j) % 2 == 0 else BLACK, rect)
                 
-def moverPieza2(pieza2):
+def agregarPuntos(pieza2):
     global pntB, pntN, turno
     if turno == "blanco":
         pntB = pntB + int(pieza2)
     else:
         pntN = pntN + int(pieza2)
-    print(f"Blancas: +{pntB}")
-    print(f"Negras: +{pntN}")
 
 # -------------------Función Mover Pieza ----------------- #
 
@@ -82,51 +90,71 @@ def moverPieza(A):
             # Si está vacío
             if A[z,w] == 0:
                 # Un paso adelante
+                if x + 1 == 7:
+                    A[z, w] = 5.0
+                    A[x, y] = 0
+                    return True
                 if z == x + 1 and y == w:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
                 # Dos pasos desde posición inicial
                 elif z == x + 2 and y == w and x == 1 and A[x+1,y] == 0:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
             else:
                 # Captura diagonal
                 if (z == x + 1 and w == y + 1) or (z == x + 1 and w == y - 1):
-                    moverPieza2(A[z, w])
-                    A[z, w] = pieza
-                    A[x, y] = 0
-                    return True
+                    if x + 1 == 7:
+                        agregarPuntos(A[z, w])
+                        A[z, w] = 5.0
+                        A[x, y] = 0
+                        return True
+                    else:
+                        agregarPuntos(A[z, w])
+                        A[z, w] = pieza
+                        A[x, y] = 0
+                        return True
 
         # Movimiento peones blancos (1.1)
         elif pieza == 1.1:
             if A[z,w] == 0:
+                if x - 1 == 0:
+                    A[z, w] = 5.1
+                    A[x, y] = 0
+                    return True
                 # Un paso adelante
                 if z == x - 1 and y == w:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
                 # Dos pasos desde posición inicial
                 elif z == x - 2 and y == w and x == 6 and A[x-1,y] == 0:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
             else:
                 # Captura diagonal
                 if (z == x - 1 and w == y + 1) or (z == x - 1 and w == y - 1):
-                    moverPieza2(A[z, w])
-                    A[z, w] = pieza
-                    A[x, y] = 0
-                    return True
+                    if x - 1 == 0:
+                        agregarPuntos(A[z, w])
+                        A[z, w] = 5.1
+                        A[x, y] = 0
+                        return True
+                    else:
+                        agregarPuntos(A[z, w])
+                        A[z, w] = pieza
+                        A[x, y] = 0
+                        return True
         # Movimiento caballo blanco y negro
         if pieza == 2.0 or pieza == 2.1:
             if ((z == x + 2 or z == x - 2) and (w == y + 1 or w == y - 1)) or ((z == x + 1 or z == x - 1) and (w == y + 2 or w == y - 2)):
-                moverPieza2(A[z, w])
+                agregarPuntos(A[z, w])
                 A[z, w] = pieza
                 A[x, y] = 0
                 return True
@@ -141,7 +169,7 @@ def moverPieza(A):
                         libre = False
                         break
                 if libre:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
@@ -157,7 +185,7 @@ def moverPieza(A):
                         libre = False
                         break
                 if libre:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
@@ -176,7 +204,7 @@ def moverPieza(A):
                     i += 1
                 
                 if libre:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     if (x == 0 and y == 0):
@@ -198,7 +226,7 @@ def moverPieza(A):
                         break
                     i += 1
                 if libre:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     if (x == 7 and y == 0):
@@ -210,7 +238,7 @@ def moverPieza(A):
         # Movimiento de rey negro
         if A[x, y] == 6.0:
             if abs(z - x) <= 1 and abs(w - y) <= 1:
-                moverPieza2(A[z, w])
+                agregarPuntos(A[z, w])
                 A[z, w] = pieza
                 A[x, y] = 0
                 reyInicialN = False
@@ -234,7 +262,7 @@ def moverPieza(A):
         # Movimiento de rey blanco
         if A[x, y] == 6.1:
             if abs(z - x) <= 1 and abs(w - y) <= 1:
-                moverPieza2(A[z, w])
+                agregarPuntos(A[z, w])
                 A[z, w] = pieza
                 A[x, y] = 0
                 reyInicialB = False
@@ -266,7 +294,7 @@ def moverPieza(A):
                         break
                     i += 1
                 if libre:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True
@@ -284,7 +312,7 @@ def moverPieza(A):
                         break
                     i += 1
                 if libre:
-                    moverPieza2(A[z, w])
+                    agregarPuntos(A[z, w])
                     A[z, w] = pieza
                     A[x, y] = 0
                     return True      
@@ -292,6 +320,24 @@ def moverPieza(A):
         print("Fuera del tablero")
     # Si no se movió la pieza, devolver false
     return False
+
+# -------------------Función detectar victoria----------------- #
+
+def victoria(A):
+    reyNegroVivo = False
+    reyBlancoVivo = False
+    for i in A:
+        for j in i:
+            if j == 6.0:
+                reyNegroVivo = True
+            if j == 6.1:
+                reyBlancoVivo = True
+    
+    if reyNegroVivo and not(reyBlancoVivo):
+        return "Negro"
+    elif reyBlancoVivo and not(reyNegroVivo):
+        return "Blanco"
+    return "N/a"
 
 # -------------------Función principal----------------- #
 
@@ -348,22 +394,30 @@ def main():
         posPiezas.clear()
         dibujarPiezas(mPiezas)
         
-        # Mostrar puntos de cada jugador
-        textoPntsBlanco = fuente.render(f"+{pntB}", True, WHITE)
-        textoPntsNegro = fuente.render(f"+{pntN}", True, WHITE)
-        pantalla.blit(textoPntsBlanco, pos_textoPntsBlanco)
-        pantalla.blit(textoPntsNegro, pos_textoPntsNegro)
-        
-        if pos1 != (-1,-1) and pos2 != (-1,-1):
-            if moverPieza(mPiezas):
-                sndMoverPieza.play()
-                if turno == "blanco":
-                    turno = "negro" 
-                else:
-                    turno = "blanco"
-            pos1 = (-1,-1)
-            pos2 = (-1,-1)
-        
+        if victoria(mPiezas) == "Blanco":
+            pygame.draw.rect(pantalla, BLACK, pos_textoVictoriaBlancas.inflate(20, 10))
+            pantalla.blit(textoVictoriaBlancas, pos_textoVictoriaBlancas)
+        elif victoria(mPiezas) == "Negro":
+            pygame.draw.rect(pantalla, BLACK, pos_textoVictoriaNegras.inflate(20, 10))
+            pantalla.blit(textoVictoriaNegras, pos_textoVictoriaNegras)
+        else:
+            
+            # Mostrar puntos de cada jugador
+            textoPntsBlanco = fuente.render(f"{pntB}", True, WHITE)
+            textoPntsNegro = fuente.render(f"{pntN}", True, WHITE)
+            pantalla.blit(textoPntsBlanco, pos_textoPntsBlanco)
+            pantalla.blit(textoPntsNegro, pos_textoPntsNegro)
+            
+            if pos1 != (-1,-1) and pos2 != (-1,-1):
+                if moverPieza(mPiezas):
+                    sndMoverPieza.play()
+                    if turno == "blanco":
+                        turno = "negro" 
+                    else:
+                        turno = "blanco"
+                pos1 = (-1,-1)
+                pos2 = (-1,-1)
+            
         pygame.display.flip()
         clock.tick(FPS)
         
