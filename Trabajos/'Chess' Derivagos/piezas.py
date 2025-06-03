@@ -25,23 +25,22 @@ TAM_PEON = (TAM_CASILLA - 14, TAM_CASILLA - 14)
 TAM_OTRAS = (TAM_CASILLA - 6,  TAM_CASILLA - 6)
 # Desfases
 OFF_PEON = (7 + DESFASE_LADO, 7 + DESFASE_LADO)
-OFF_TDG  = (3 + DESFASE_LADO, 3 + DESFASE_LADO)
-OFF_TC   = (5 + DESFASE_LADO, 5 + DESFASE_LADO)
+OFF_OTRAS  = (3 + DESFASE_LADO, 3 + DESFASE_LADO)
 
 # Diccionario: código → (imagen, tamaño, desfase)
 PIEZAS = {
     1.0: (cargar_textura("PEON_NEGRO", TAM_PEON), TAM_PEON, OFF_PEON),
     1.1: (cargar_textura("PEON_BLANCO", TAM_PEON), TAM_PEON, OFF_PEON),
-    4.0: (cargar_textura("TORRE_NEGRA", TAM_OTRAS), TAM_OTRAS, OFF_TC),
-    4.1: (cargar_textura("TORRE_BLANCA", TAM_OTRAS), TAM_OTRAS, OFF_TC),
-    2.0: (cargar_textura("CABALLO_NEGRO", TAM_OTRAS), TAM_OTRAS, OFF_TC),
-    2.1: (cargar_textura("CABALLO_BLANCO", TAM_OTRAS), TAM_OTRAS, OFF_TC),
-    3.0: (cargar_textura("ALFIL_NEGRO", TAM_OTRAS), TAM_OTRAS, OFF_TDG),
-    3.1: (cargar_textura("ALFIL_BLANCO", TAM_OTRAS), TAM_OTRAS, OFF_TDG),
-    5.0: (cargar_textura("DAMA_NEGRA", TAM_OTRAS), TAM_OTRAS, OFF_TDG),
-    5.1: (cargar_textura("DAMA_BLANCA", TAM_OTRAS), TAM_OTRAS, OFF_TDG),
-    6.0: (cargar_textura("REY_NEGRO", TAM_OTRAS), TAM_OTRAS, OFF_TDG),
-    6.1: (cargar_textura("REY_BLANCO", TAM_OTRAS), TAM_OTRAS, OFF_TDG),
+    4.0: (cargar_textura("TORRE_NEGRA", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    4.1: (cargar_textura("TORRE_BLANCA", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    2.0: (cargar_textura("CABALLO_NEGRO", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    2.1: (cargar_textura("CABALLO_BLANCO", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    3.0: (cargar_textura("ALFIL_NEGRO", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    3.1: (cargar_textura("ALFIL_BLANCO", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    5.0: (cargar_textura("DAMA_NEGRA", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    5.1: (cargar_textura("DAMA_BLANCA", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    6.0: (cargar_textura("REY_NEGRO", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
+    6.1: (cargar_textura("REY_BLANCO", TAM_OTRAS), TAM_OTRAS, OFF_OTRAS),
 }
 
 # -------------------Función Dibujar Piezas----------------- #
