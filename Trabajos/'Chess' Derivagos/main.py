@@ -65,7 +65,7 @@ def dibujarTablero(A, seleccion=None):
                 pygame.draw.rect(pantalla, AMARILLO_OSCURO, rect, 3)
             else:
                 # coloreado normal (ejemplo: chessboard)
-                pygame.draw.rect(pantalla, WHITE if (i + j) % 2 == 0 else BLACK, rect)
+                pygame.draw.rect(pantalla, WHITE if A[i,j] == 1 else BLACK, rect)
                 
 def agregarPuntos(pieza2):
     global pntB, pntN, turno
