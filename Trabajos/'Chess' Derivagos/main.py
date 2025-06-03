@@ -20,6 +20,7 @@ textoPntsNegro = fuente.render(f"{pntN}", True, WHITE)
 
 textoVictoriaBlancas = fuente_victoria.render("Ganan Blancas", True, WHITE)
 textoVictoriaNegras = fuente_victoria.render("Ganan Negras", True, WHITE)
+
 # Posición de los textos
 pos_textoPntsBlanco = (3,ALTO - 50)
 pos_textoPntsNegro = (3,20)
@@ -65,8 +66,8 @@ def dibujarTablero(A, seleccion=None):
                 pygame.draw.rect(pantalla, AMARILLO_OSCURO, rect, 3)
             else:
                 # coloreado normal (ejemplo: chessboard)
-                pygame.draw.rect(pantalla, WHITE if A[i,j] == 1 else BLACK, rect)
-                
+                pygame.draw.rect(pantalla, WHITE if A[i, j] == 1 else BLACK, rect)
+
 def agregarPuntos(pieza2):
     global pntB, pntN, turno
     if turno == "blanco":
@@ -253,7 +254,7 @@ def moverPieza(A):
                 torreInicial_2N = False
                 reyInicialN = False
                 return True
-            elif ((z == x and w == y - 2) or (z == x and w == y - 3)) and A[x,y-1] == 0 and A[x,y-2] == 0 and torreInicial_1N and reyInicialN:
+            elif ((z == x and w == y - 2) or (z == x and w == y - 3)) and A[x,y-1] == 0 and A[x,y-2] == 0 and A[x,y-3] == 0 and torreInicial_1N and reyInicialN:
                 A[x, y-2] = pieza
                 A[x, y] = 0
                 A[x,y-1] = A[x,y-4]
@@ -275,7 +276,7 @@ def moverPieza(A):
                 A[x,y+1] = A[x,y+3]
                 A[x,y+3] = 0
                 return True
-            elif ((z == x and w == y - 2) or (z == x and w == y - 3)) and A[x,y-1] == 0 and A[x,y-2] == 0 and torreInicial_1B and reyInicialB:
+            elif ((z == x and w == y - 2) or (z == x and w == y - 3)) and A[x,y-1] == 0 and A[x,y-2] == 0 and A[x,y-3] == 0 and torreInicial_1B and reyInicialB:
                 A[x, y-2] = pieza
                 A[x, y] = 0
                 A[x,y-1] = A[x,y-4]
@@ -359,7 +360,6 @@ def main():
                 # Guardar fila y columna de la selección
                 col = (x - DESFASE_LADO) // TAM_CASILLA
                 fila = (y - DESFASE_LADO) // TAM_CASILLA
-                cont = cont + 1
                         
                 # comprobamos que esté dentro del tablero
                 try:
@@ -380,14 +380,11 @@ def main():
                 if selecPieza:
                     pos1 = (fila, col)
                     pos2 = (-1,-1)
-                    cont = 0
-                    cont = cont + 1
-                elif 0 < cont < 3:
-                    pos2 = (fila,col)
-                else:
-                    pos1 = (-1,-1)
-                    pos2 = (-1,-1)
                     cont = 1
+                elif 0 < cont:
+                    pos2 = (fila,col)
+                    cont = 0
+                
         # Dibujado
         pantalla.fill((20, 20, 20))
         dibujarTablero(mTablero, seleccion)
